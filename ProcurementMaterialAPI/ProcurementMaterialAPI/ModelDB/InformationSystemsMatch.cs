@@ -11,17 +11,14 @@ namespace ProcurementMaterialAPI.ModelDB
         /// <summary>
         /// Номенклатура|Номер / Материал
         /// </summary>
-        [StringLength(40)]
         public string MaterialName { get; set; }
         /// <summary>
         /// Наимен. материала
         /// </summary>
-        [StringLength(12)]
         public string MaterialNomSap { get; set; }
         /// <summary>
         /// Номенклатура|Наименование
         /// </summary>
-        [StringLength(15)]
         public string MaterialNomKis { get; set; }
         /// <summary>
         /// Базовая ЕИ
@@ -60,7 +57,6 @@ namespace ProcurementMaterialAPI.ModelDB
         /// <summary>
         /// Сумма расхода / СтоимОтпБезВнутр
         /// </summary>
-        [StringLength(3)]
         public float SumOutgo { get; set; }
         /// <summary>
         /// Кол-во на конец	/ Остаток на конец
@@ -69,12 +65,15 @@ namespace ProcurementMaterialAPI.ModelDB
         /// <summary>
         /// Сумма на конец / Стоимость на конец
         /// </summary>
-        [StringLength(3)]
         public float SumEnd { get; set; }
 
 
 
-        ///Прочее
+        ///Прочее 
+        
+        ///<summary>
+        /// Код Цеха КИС
+        /// </summary>
         public string DepartmentCode { get; set; }
 
 
