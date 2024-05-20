@@ -4,6 +4,9 @@ namespace ProcurementMaterialAPI.ModelDB
 {
     public class InformationSystemsMatch
     {
+        /// <summary>
+        /// Identity (Счётчик)
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// Номенклатура|Номер / Материал
@@ -71,6 +74,8 @@ namespace ProcurementMaterialAPI.ModelDB
 
 
 
+        ///Прочее
+        public string DepartmentCode { get; set; }
 
 
 
