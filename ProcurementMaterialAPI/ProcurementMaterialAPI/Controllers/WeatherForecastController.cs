@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NPOI.HPSF;
 
 namespace ProcurementMaterialAPI.Controllers
 {
@@ -29,5 +30,16 @@ namespace ProcurementMaterialAPI.Controllers
 			})
 			.ToArray();
 		}
-	}
+
+        [HttpPost(Name = "GetData")]
+        public ActionResult<List<List<string>>> GetData()
+        {
+            string filePath = "DataServices/СинТЗ-12.2023.xlsx"; // Укажите правильный путь к вашему Excel файлу
+            ImportDataFromExcel excelReader = new ImportDataFromExcel(filePath);
+            List<List<string>> excelData = excelReader.ReadExcelFile();
+			JsonResult json = new JsonResult(excelData);
+            // Возвращаем данные в формате JSON
+            return Ok(excelData);
+        }
+    }
 }
