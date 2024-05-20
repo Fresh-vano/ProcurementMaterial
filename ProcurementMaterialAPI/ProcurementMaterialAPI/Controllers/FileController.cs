@@ -6,12 +6,12 @@ namespace ProcurementMaterialAPI.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class WeatherForecastController : ControllerBase
+	public class FileController : ControllerBase
 	{
 
 		private readonly MaterialDbContext _context;
 
-		public WeatherForecastController(MaterialDbContext context)
+		public FileController(MaterialDbContext context)
 		{
 			_context = context;
 		}
