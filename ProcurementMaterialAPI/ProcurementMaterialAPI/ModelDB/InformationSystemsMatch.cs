@@ -4,6 +4,9 @@ namespace ProcurementMaterialAPI.ModelDB
 {
     public class InformationSystemsMatch
     {
+        /// <summary>
+        /// Identity (Счётчик)
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// Номенклатура|Номер / Материал
@@ -33,27 +36,22 @@ namespace ProcurementMaterialAPI.ModelDB
         /// <summary>
         /// Цех|Наименование / Цех
         /// </summary>
-        [StringLength(3)]
         public string DepartmentName { get; set; }
         /// <summary>
         /// Группа ном.|Код	/ Вид материала	
         /// </summary>
-        [StringLength(3)]
         public string GroupMaterialCode { get; set; }
         /// <summary>
         /// Группа ном.|Наименование / Наимен. ВидаМатер
         /// </summary>
-        [StringLength(3)]
         public string GroupMaterialName { get; set; }
         /// <summary>
         /// Подгруппа ном.|Код	/ Группа материалов
         /// </summary>
-        [StringLength(3)]
         public string SubGroupMaterialCode { get; set; }
         /// <summary>
         /// Подгруппа ном.|Наименование / НаименГруппыМтр	
         /// </summary>
-        [StringLength(3)]
         public string SubGroupMaterialName { get; set; }
         /// <summary>
         /// Кол-во расхода / КолОтпБезВнутр
@@ -76,6 +74,8 @@ namespace ProcurementMaterialAPI.ModelDB
 
 
 
+        ///Прочее
+        public string DepartmentCode { get; set; }
 
 
 
