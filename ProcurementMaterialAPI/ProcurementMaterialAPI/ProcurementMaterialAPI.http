@@ -1,0 +1,6 @@
+@ProcurementMaterialAPI_HostAddress = http://localhost:5242
+
+GET {{ProcurementMaterialAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
