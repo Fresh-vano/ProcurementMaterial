@@ -15,13 +15,11 @@
         /// </summary>
         public string Description { get; set; }
         /// <summary>
-        /// Id plant
-        /// </summary>
-        public int DepartmentId { get; set; }
-        /// <summary>
         /// Plant
         /// </summary>
         public string DepartmentName { get; set; }
+
+        public string DepartmentCode { get; set; }
 
     }
 }
