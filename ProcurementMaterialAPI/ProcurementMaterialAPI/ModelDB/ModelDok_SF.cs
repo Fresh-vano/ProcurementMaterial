@@ -23,6 +23,8 @@ namespace ProcurementMaterialAPI.ModelDB
 
         public string material_group {  get; set; }
 
+        public string material_group_name { get; set; }
+
         public char  EI {  get; set; }
 
         public string INN { get; set; }
@@ -30,6 +32,14 @@ namespace ProcurementMaterialAPI.ModelDB
         public decimal quan {  get; set; }
 
         public decimal cost { get; set; }
+        
+        public string Direction {  get; set; }
+
+        // фигня ниже не нужна особо
+        public string Department { get; set; }
+
+        public string normalization {  get; set; }
+
 
 
     }
