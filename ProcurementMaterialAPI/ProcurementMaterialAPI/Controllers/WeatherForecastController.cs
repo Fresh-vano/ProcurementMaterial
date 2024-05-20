@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProcurementMaterialAPI.Context;
+using ProcurementMaterialAPI.ModelDB;
 
 namespace ProcurementMaterialAPI.Controllers
 {
@@ -11,16 +14,17 @@ namespace ProcurementMaterialAPI.Controllers
 			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 		};
 
-		private readonly ILogger<WeatherForecastController> _logger;
+		private readonly MaterialDbContext _context;
 
-		public WeatherForecastController(ILogger<WeatherForecastController> logger)
+		public WeatherForecastController(MaterialDbContext context)
 		{
-			_logger = logger;
+			_context = context;
 		}
 
 		[HttpGet(Name = "GetWeatherForecast")]
 		public IEnumerable<WeatherForecast> Get()
 		{
+			JsonResult json = new JsonResult("List");
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 			{
 				Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -28,6 +32,12 @@ namespace ProcurementMaterialAPI.Controllers
 				Summary = Summaries[Random.Shared.Next(Summaries.Length)]
 			})
 			.ToArray();
+		}
+
+		[HttpPost]
+		public ActionResult<List<InformationSystemsMatch>> Db()
+		{
+			return Ok(_context.InformationSystemsMatch.ToList());
 		}
 	}
 }

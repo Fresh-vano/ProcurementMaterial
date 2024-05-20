@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProcurementMaterialAPI.ModelDB
 {
@@ -12,24 +13,15 @@ namespace ProcurementMaterialAPI.ModelDB
         /// Номенклатура|Номер / Материал
         /// </summary>
         public string MaterialName { get; set; }
-        /// <summary>
-        /// Наимен. материала
-        /// </summary>
-        public string MaterialNomSap { get; set; }
-        /// <summary>
-        /// Номенклатура|Наименование
-        /// </summary>
-        public string MaterialNomKis { get; set; }
-        /// <summary>
-        /// Базовая ЕИ
-        /// </summary>
-        [StringLength(3)]
-        public string SapBEI { get; set; }
-        /// <summary>
-        /// Номенклатура|ЕИ
-        /// </summary>
-        [StringLength(3)]
-        public string KisBEI { get; set; }
+		/// <summary>
+		/// Наимен. материала \ Номенклатура|Наименование
+		/// </summary>
+		public string MaterialNom { get; set; }
+		/// <summary>
+		/// Базовая ЕИ \ Номенклатура|ЕИ
+		/// </summary>
+		[StringLength(3)]
+        public string BEI { get; set; }
         /// <summary>
         /// Цех|Наименование / Цех
         /// </summary>
@@ -74,7 +66,7 @@ namespace ProcurementMaterialAPI.ModelDB
         ///<summary>
         /// Код Цеха КИС
         /// </summary>
-        public string DepartmentCode { get; set; }
+        public string? DepartmentCode { get; set; }
 
 
 

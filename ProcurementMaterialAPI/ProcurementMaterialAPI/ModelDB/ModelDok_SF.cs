@@ -1,10 +1,12 @@
 ﻿using Microsoft.Identity.Client;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.X509Certificates;
 
 namespace ProcurementMaterialAPI.ModelDB
 {
     public class ModelDok_SF
     {
+        public int id { get; set; }
         public int buisnes_number {  get; set; }
 
         public int buisnes_consignee { get; set; }
@@ -29,9 +31,9 @@ namespace ProcurementMaterialAPI.ModelDB
 
         public string INN { get; set; }
 
-        public decimal quan {  get; set; }
+        public double quan {  get; set; }
 
-        public decimal cost { get; set; }
+        public double cost { get; set; }
         
         public string Direction {  get; set; }
 

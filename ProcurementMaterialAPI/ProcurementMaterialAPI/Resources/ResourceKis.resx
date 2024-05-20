@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BEI" xml:space="preserve">
+    <value>Номенклатура|ЕИ</value>
+  </data>
   <data name="CountEnd" xml:space="preserve">
     <value>Кол-во на конец</value>
   </data>
@@ -135,13 +138,10 @@
   <data name="GroupMaterialName" xml:space="preserve">
     <value>Группа ном.|Наименование</value>
   </data>
-  <data name="KisBEI" xml:space="preserve">
-    <value>Номенклатура|ЕИ</value>
-  </data>
   <data name="MaterialName" xml:space="preserve">
     <value>Номенклатура|Номер</value>
   </data>
-  <data name="MaterialNomKis" xml:space="preserve">
+  <data name="MaterialNom" xml:space="preserve">
     <value>Номенклатура|Наименование</value>
   </data>
   <data name="SubGroupMaterialCode" xml:space="preserve">
