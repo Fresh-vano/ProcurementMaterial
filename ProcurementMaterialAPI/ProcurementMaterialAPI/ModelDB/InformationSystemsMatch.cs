@@ -1,4 +1,4 @@
-﻿namespace ProcurementMaterialAPI.Models
+﻿namespace ProcurementMaterialAPI.ModelDB
 {
     public class InformationSystemsMatch
     {
@@ -8,6 +8,6 @@
         /// </summary>
         public string NomMaterial { get; set; }
 
-         
+
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ProcurementMaterialAPI.Models
+﻿namespace ProcurementMaterialAPI.ModelDB
 {
     public class UserModel
     {
@@ -10,7 +10,7 @@
         /// <summary>
         /// Role (1 - manager, 2 - purchaser, 3 - report_group)
         /// </summary>
-        public int UserRole {  get; set; }
+        public int UserRole { get; set; }
 
     }
 }

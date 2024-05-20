@@ -1,4 +1,4 @@
-﻿namespace ProcurementMaterialAPI.Models
+﻿namespace ProcurementMaterialAPI.ModelDB
 {
     public class InformationSystems
     {
@@ -21,7 +21,7 @@
         /// <summary>
         /// Plant
         /// </summary>
-        public string DepartmentName { get; set;}
+        public string DepartmentName { get; set; }
 
     }
 }
