@@ -20,7 +20,44 @@ namespace ProcurementMaterialAPI.Controllers
 			_context = context;
 		}
 
-		[HttpPost]
+        [HttpPost]
+        [Route("GetUniqueMaterials")]
+        public IActionResult GetUniqueMaterials()
+        {
+            var uniqueMaterials = _context.Dok_SF
+                .Select(d => d.material)
+                .Distinct()
+                .ToList();
+
+            if (!uniqueMaterials.Any())
+                return NotFound();
+
+            return Ok(new { materials = uniqueMaterials });
+        }
+
+        [HttpPost]
+        [Route("GetUniqueINNsByMaterial")]
+        public IActionResult GetUniqueINNsByMaterial([FromBody] MaterialRequest request)
+        {
+            var uniqueINNs = _context.Dok_SF
+                .Where(d => d.material == request.Material)
+                .Select(d => d.INN)
+                .Distinct()
+                .ToList();
+
+            if (!uniqueINNs.Any())
+                return NotFound();
+
+            return Ok(new { INNs = uniqueINNs });
+        }
+
+        // Define the MaterialRequest class
+        public class MaterialRequest
+        {
+            public string Material { get; set; }
+        }
+
+        [HttpPost]
 		[Route("3GenerateCostOverTimeChartJson")]
 		public string GenerateCostOverTimeChartJson(List<ModelDok_SF> data)
 		{
