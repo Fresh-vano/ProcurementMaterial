@@ -104,6 +104,13 @@ namespace ProcurementMaterialAPI.DataServices
 						property.SetValue(entity, floatValue);
 					}
 				}
+				else if (property.PropertyType == typeof(DateOnly))
+				{
+					if (DateOnly.TryParse(value, out DateOnly dateValue))
+					{
+						property.SetValue(entity, dateValue);
+					}
+				}
 				else if (property.PropertyType == typeof(double))
 				{
 					if (double.TryParse(value, out double doubleValue))

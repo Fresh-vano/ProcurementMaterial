@@ -1,6 +1,6 @@
 // src/components/Manager/Dashboard.js
 import React from 'react';
-import { Container, Typography, Grid, Button } from '@mui/material';
+import { Container, Typography, Grid, Button, AppBar, Toolbar } from '@mui/material';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,6 +19,7 @@ import {
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import { useAuth } from '../../utils/auth';
 import { useNavigate } from 'react-router-dom';
+import Tile from "../../Tile";
 
 // Регистрация компонентов Chart.js
 ChartJS.register(
@@ -103,23 +104,37 @@ const ManagerDashboard = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4">Manager Dashboard</Typography>
-      <Button variant="contained" color="secondary" onClick={handleLogout}>
-        Logout
-      </Button>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Bar data={data.bar} />
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Procurement Analytics
+          </Typography>
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Container>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Tile>
+              <Bar data={data.bar} />
+            </Tile>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Tile>
+              <Pie data={data.pie} />
+            </Tile>
+          </Grid>
+          <Grid item xs={12}>
+            <Tile>
+              <Line data={data.line} />
+            </Tile>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Pie data={data.pie} />
-        </Grid>
-        <Grid item xs={12}>
-          <Line data={data.line} />
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 };
 

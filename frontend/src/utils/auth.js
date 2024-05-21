@@ -9,18 +9,20 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = async (username, password, callback) => {
-    const response = await axios.post('http://localhost:8080/User/auth', {
-      username,
-      password,
+    debugger
+    await axios.post('http://localhost:8080/User/auth', {
+      username: username,
+      password: password,
+    }).then(res => {
+      if (res.status === 200) {
+        const role = res.data;
+        setUser({ username, roles: [role] });
+        callback();
+      }
+    }).catch(res => {
+      alert('Invalid credentials: ' + res.response.data.title);
     });
 
-    if (response.status === 200) {
-      const role = response.data;
-      setUser({ username, roles: [role] });
-      callback();
-    } else {
-      alert('Invalid credentials');
-    }
   };
 
   const logout = (callback) => {

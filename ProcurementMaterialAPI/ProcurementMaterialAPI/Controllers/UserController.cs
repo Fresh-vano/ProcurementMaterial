@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProcurementMaterialAPI.Context;
+using ProcurementMaterialAPI.DTOs;
 using ProcurementMaterialAPI.Enums;
 using ProcurementMaterialAPI.ModelDB;
 
@@ -41,16 +42,16 @@ namespace ProcurementMaterialAPI.Controllers
 		}
 
 		[HttpPost("auth")]
-		public ActionResult<string> Auth(string username, string password)
+		public ActionResult<string> Auth(UserDTO userDto)
 		{
-			var user = _context.User.FirstOrDefault(x => x.UserName == username);
+			var user = _context.User.FirstOrDefault(x => x.UserName == userDto.Username);
 
 			if (user == null)
 			{
 				return NotFound();
 			}
 
-			if (password != user.Password)
+			if (userDto.Password != user.Password)
 			{
 				return BadRequest();
 			}

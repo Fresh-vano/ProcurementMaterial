@@ -27,7 +27,7 @@ namespace ProcurementMaterialAPI.ModelDB
 
         public string material_group_name { get; set; }
 
-        public char  EI {  get; set; }
+        public string  EI {  get; set; }
 
         public string INN { get; set; }
 
