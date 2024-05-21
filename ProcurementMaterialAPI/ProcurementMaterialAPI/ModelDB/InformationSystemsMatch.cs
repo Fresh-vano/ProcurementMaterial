@@ -9,10 +9,10 @@ namespace ProcurementMaterialAPI.ModelDB
         /// Identity (Счётчик)
         /// </summary>
         public int Id { get; set; }
-        /// <summary>
-        /// Номенклатура|Номер / Материал
-        /// </summary>
-        public string MaterialName { get; set; }
+		/// <summary>
+		/// Номенклатура|Номер / Материал
+		/// </summary>
+		public string MaterialName { get; set; }
 		/// <summary>
 		/// Наимен. материала \ Номенклатура|Наименование
 		/// </summary>

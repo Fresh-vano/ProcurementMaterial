@@ -82,7 +82,8 @@ namespace ProcurementMaterialAPI.DataServices
                     if (rowIdx % 1000 == 0)
                         _context.SaveChanges();
                 }
-            }
+				_context.SaveChanges();
+			}
         }
 
         private void SetPropertyValue(ModelDok_SF entity, string propertyName, string value)

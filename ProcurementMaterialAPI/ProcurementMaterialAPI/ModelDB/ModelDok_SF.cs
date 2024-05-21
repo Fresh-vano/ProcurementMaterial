@@ -7,7 +7,7 @@ namespace ProcurementMaterialAPI.ModelDB
     public class ModelDok_SF
     {
         public int id { get; set; }
-        public int buisnes_number {  get; set; }
+        public string buisnes_number {  get; set; }
 
         public int buisnes_consignee { get; set; }
 

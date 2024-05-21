@@ -13,14 +13,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MaterialDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddCors(c =>
+builder.Services.AddCors(options =>
 {
-	c.AddDefaultPolicy(
-		policy =>
+	options.AddPolicy("AllowAllOrigins",
+		builder =>
 		{
-			policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-		}
-	);
+			builder.AllowAnyOrigin()
+				   .AllowAnyMethod()
+				   .AllowAnyHeader();
+		});
 });
 
 var app = builder.Build();
@@ -34,7 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 

@@ -1,11 +1,11 @@
 // src/components/Tile.js
 import React from 'react';
-import { Paper } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 
 const Tile = ({ children }) => {
   return (
-    <Paper style={{ padding: '20px', margin: '20px 0' }}>
-      {children}
+    <Paper style={{ padding: '20px', margin: '10px', minHeight:'594px' }}>
+        {children}
     </Paper>
   );
 };

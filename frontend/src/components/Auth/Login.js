@@ -32,7 +32,7 @@ const Login = () => {
   return (
     <Container component="main" maxWidth="xs">
       <Typography component="h1" variant="h5">
-        Sign in
+        Вход
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -40,7 +40,7 @@ const Login = () => {
           margin="normal"
           required
           fullWidth
-          label="Username"
+          label="Логин"
           autoFocus
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -50,13 +50,13 @@ const Login = () => {
           margin="normal"
           required
           fullWidth
-          label="Password"
+          label="Пароль"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button type="submit" fullWidth variant="contained" color="primary">
-          Sign In
+          Войти
         </Button>
       </form>
     </Container>
