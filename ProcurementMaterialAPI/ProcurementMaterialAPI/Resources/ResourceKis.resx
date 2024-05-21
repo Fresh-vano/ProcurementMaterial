@@ -117,43 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BEI" xml:space="preserve">
-    <value>Номенклатура|ЕИ</value>
+  <data name="Группа ном.|Код" xml:space="preserve">
+    <value>GroupMaterialCode</value>
   </data>
-  <data name="CountEnd" xml:space="preserve">
-    <value>Кол-во на конец</value>
+  <data name="Группа ном.|Наименование" xml:space="preserve">
+    <value>GroupMaterialName</value>
   </data>
-  <data name="CountOutgo" xml:space="preserve">
-    <value>Кол-во расхода</value>
+  <data name="Кол-во на конец" xml:space="preserve">
+    <value>CountEnd</value>
   </data>
-  <data name="DepartmentCode" xml:space="preserve">
-    <value>Цех|Цех</value>
+  <data name="Кол-во расхода" xml:space="preserve">
+    <value>CountOutgo</value>
   </data>
-  <data name="DepartmentName" xml:space="preserve">
-    <value>Цех|Наименование</value>
+  <data name="Номенклатура|ЕИ" xml:space="preserve">
+    <value>BEI</value>
   </data>
-  <data name="GroupMaterialCode" xml:space="preserve">
-    <value>Группа ном.|Код</value>
+  <data name="Номенклатура|Наименование" xml:space="preserve">
+    <value>MaterialNom</value>
   </data>
-  <data name="GroupMaterialName" xml:space="preserve">
-    <value>Группа ном.|Наименование</value>
+  <data name="Номенклатура|Номер" xml:space="preserve">
+    <value>MaterialName</value>
   </data>
-  <data name="MaterialName" xml:space="preserve">
-    <value>Номенклатура|Номер</value>
+  <data name="Подгруппа ном.|Код" xml:space="preserve">
+    <value>SubGroupMaterialCode</value>
   </data>
-  <data name="MaterialNom" xml:space="preserve">
-    <value>Номенклатура|Наименование</value>
+  <data name="Подгруппа ном.|Наименование" xml:space="preserve">
+    <value>SubGroupMaterialName</value>
   </data>
-  <data name="SubGroupMaterialCode" xml:space="preserve">
-    <value>Подгруппа ном.|Код</value>
+  <data name="Сумма на конец" xml:space="preserve">
+    <value>SumEnd</value>
   </data>
-  <data name="SubGroupMaterialName" xml:space="preserve">
-    <value>Подгруппа ном.|Наименование</value>
+  <data name="Сумма расхода" xml:space="preserve">
+    <value>SumOutgo</value>
   </data>
-  <data name="SumEnd" xml:space="preserve">
-    <value>Сумма на конец</value>
+  <data name="Цех|Наименование" xml:space="preserve">
+    <value>DepartmentName</value>
   </data>
-  <data name="SumOutgo" xml:space="preserve">
-    <value>Сумма расхода</value>
+  <data name="Цех|Цех" xml:space="preserve">
+    <value>DepartmentCode</value>
   </data>
 </root>
