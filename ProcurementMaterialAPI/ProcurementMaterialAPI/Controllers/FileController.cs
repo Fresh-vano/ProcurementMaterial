@@ -24,7 +24,7 @@ namespace ProcurementMaterialAPI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<List<List<string>>>> UploadFile(IFormFile file)
+		public async Task<ActionResult<List<List<string>>>> UploadFile(IFormFile file, DateOnly date)
 		{
 			if (file == null || file.Length == 0)
 			{
@@ -42,9 +42,19 @@ namespace ProcurementMaterialAPI.Controllers
 				await file.CopyToAsync(stream);
 			}
 
-			// Обработка файла и чтение данных из Excel
-			ImportDataFromExcel excelReader = new ImportDataFromExcel(filePath);
-			var result = excelReader.ReadExcelFile(_context);
+			List<InformationSystemsMatch> result;
+			string fileType;
+
+			try
+			{
+				// Обработка файла и чтение данных из Excel
+				ImportDataFromExcel excelReader = new ImportDataFromExcel(_context, filePath);
+				(fileType, result) = excelReader.ReadExcelFile(date);
+			}
+			catch (Exception ex)
+			{
+				return Problem(ex.Message);
+			}
 
 			System.IO.File.Delete(filePath);
 

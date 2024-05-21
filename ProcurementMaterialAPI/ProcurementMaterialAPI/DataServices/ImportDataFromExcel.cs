@@ -5,23 +5,26 @@ using System.Resources;
 using ProcurementMaterialAPI.ModelDB;
 using ProcurementMaterialAPI.Context;
 using System.Collections;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProcurementMaterialAPI.DataServices
 {
 	public class ImportDataFromExcel
 	{
+		private readonly MaterialDbContext _context;
 		private readonly string _filePath;
 		private readonly ResourceManager _resourceKis;
 		private readonly ResourceManager _resourceSap;
 
-		public ImportDataFromExcel(string filePath)
+		public ImportDataFromExcel(MaterialDbContext context, string filePath)
 		{
+			_context = context;
 			_filePath = filePath;
 			_resourceKis = new ResourceManager("ProcurementMaterialAPI.Resources.ResourceKis", Assembly.GetExecutingAssembly());
 			_resourceSap = new ResourceManager("ProcurementMaterialAPI.Resources.ResourceSap", Assembly.GetExecutingAssembly());
 		}
 
-		public (string fileType, List<InformationSystemsMatch> data) ReadExcelFile(MaterialDbContext context)
+		public (string fileType, List<InformationSystemsMatch> data) ReadExcelFile(DateOnly date)
 		{
 			var data = new List<InformationSystemsMatch>();
 			string fileType = "Unknown";
@@ -58,6 +61,18 @@ namespace ProcurementMaterialAPI.DataServices
 					IRow row = sheet.GetRow(rowIdx);
 					if (row == null) continue;
 
+					bool isEmptyRow = true;
+					for (int colIdx = 0; colIdx < row.LastCellNum; colIdx++)
+					{
+						ICell cell = row.GetCell(colIdx);
+						if (cell != null && cell.CellType != CellType.Blank)
+						{
+							isEmptyRow = false;
+							break;
+						}
+					}
+					if (isEmptyRow) continue;
+
 					var entity = new InformationSystemsMatch();
 
 					for (int colIdx = 1; colIdx < row.LastCellNum; colIdx++)
@@ -84,8 +99,10 @@ namespace ProcurementMaterialAPI.DataServices
 						}
 					}
 
-					context.InformationSystemsMatch.Add(entity);
-					context.SaveChanges();
+					entity.Date = date;
+
+					_context.InformationSystemsMatch.Add(entity);
+					_context.SaveChanges();
 					data.Add(entity);
 				}
 			}

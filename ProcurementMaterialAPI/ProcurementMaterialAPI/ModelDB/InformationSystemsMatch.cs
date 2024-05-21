@@ -20,12 +20,11 @@ namespace ProcurementMaterialAPI.ModelDB
 		/// <summary>
 		/// Базовая ЕИ \ Номенклатура|ЕИ
 		/// </summary>
-		[StringLength(3)]
         public string BEI { get; set; }
         /// <summary>
         /// Цех|Наименование / Цех
         /// </summary>
-        public string DepartmentName { get; set; }
+        public string? DepartmentName { get; set; }
         /// <summary>
         /// Группа ном.|Код	/ Вид материала	
         /// </summary>
@@ -41,15 +40,15 @@ namespace ProcurementMaterialAPI.ModelDB
         /// <summary>
         /// Подгруппа ном.|Наименование / НаименГруппыМтр	
         /// </summary>
-        public string SubGroupMaterialName { get; set; }
+        public string? SubGroupMaterialName { get; set; }
         /// <summary>
         /// Кол-во расхода / КолОтпБезВнутр
         /// </summary>
-        public int CountOutgo { get; set; }
+        public int? CountOutgo { get; set; }
         /// <summary>
         /// Сумма расхода / СтоимОтпБезВнутр
         /// </summary>
-        public float SumOutgo { get; set; }
+        public float? SumOutgo { get; set; }
         /// <summary>
         /// Кол-во на конец	/ Остаток на конец
         /// </summary>
@@ -59,7 +58,10 @@ namespace ProcurementMaterialAPI.ModelDB
         /// </summary>
         public float SumEnd { get; set; }
 
-
+        /// <summary>
+        /// Дата загрузки
+        /// </summary>
+        public DateOnly Date { get; set; }
 
         ///Прочее 
         

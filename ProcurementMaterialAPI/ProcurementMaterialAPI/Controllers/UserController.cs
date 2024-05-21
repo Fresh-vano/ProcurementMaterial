@@ -40,7 +40,7 @@ namespace ProcurementMaterialAPI.Controllers
 			return Ok("User registered successfully.");
 		}
 
-		[HttpPost]
+		[HttpPost("auth")]
 		public ActionResult<string> Auth(string username, string password)
 		{
 			var user = _context.User.FirstOrDefault(x => x.UserName == username);

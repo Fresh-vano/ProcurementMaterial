@@ -1,21 +1,22 @@
 // src/utils/auth.js
 import {Navigate} from "react-router-dom"
 import React, { createContext, useContext, useState } from 'react';
+import axios from "axios";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const login = (username, password, callback) => {
-    const users = {
-      manager: { password: '123', roles: ['manager'] },
-      purchaser: { password: '123', roles: ['purchaser'] },
-      report_group: { password: '123', roles: ['report_group'] },
-    };
+  const login = async (username, password, callback) => {
+    const response = await axios.post('http://localhost:8080/api/data/auth', {
+      username,
+      password,
+    });
 
-    if (users[username] && users[username].password === password) {
-      setUser({ username, roles: users[username].roles });
+    if (response.status === 200) {
+      const role = response.data;
+      setUser({ username, roles: [role] });
       callback();
     } else {
       alert('Invalid credentials');

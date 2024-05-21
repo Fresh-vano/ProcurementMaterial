@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProcurementMaterialAPI.Context;
 
@@ -11,9 +12,11 @@ using ProcurementMaterialAPI.Context;
 namespace ProcurementMaterialAPI.Migrations
 {
     [DbContext(typeof(MaterialDbContext))]
-    partial class MaterialDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240521053041_UpdateInformation")]
+    partial class UpdateInformation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace ProcurementMaterialAPI.Migrations
 
                     b.Property<int?>("CountOutgo")
                         .HasColumnType("int");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
 
                     b.Property<string>("DepartmentCode")
                         .HasColumnType("nvarchar(max)");
@@ -75,7 +75,7 @@ namespace ProcurementMaterialAPI.Migrations
                     b.Property<float>("SumEnd")
                         .HasColumnType("real");
 
-                    b.Property<float?>("SumOutgo")
+                    b.Property<float>("SumOutgo")
                         .HasColumnType("real");
 
                     b.HasKey("Id");
