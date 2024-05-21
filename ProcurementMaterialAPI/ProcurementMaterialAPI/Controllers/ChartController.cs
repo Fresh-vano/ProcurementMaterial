@@ -108,7 +108,8 @@ namespace ProcurementMaterialAPI.Controllers
 		[Route("4GenerateSupplierCostComparisonChartJson")]
 		public IActionResult GenerateSupplierCostComparisonChartJson([FromBody] SupplierCostRequest request)
 		{
-			var suppliers = _context.Dok_SF
+            //График сравнения стоимости материалов от разных поставщиков(гистограмма):
+            var suppliers = _context.Dok_SF
 				.Where(d => request.INNs.Contains(d.INN) && d.material == request.Material)
 				.Select(d => d.INN)
 				.Distinct()
@@ -392,22 +393,38 @@ namespace ProcurementMaterialAPI.Controllers
 
 		[HttpPost]
 		[Route("8GenerateMaterialTypeCostChartJson")]
-		public string GenerateMaterialTypeCostChartJson(List<ModelDok_SF> data)
+		public IActionResult GenerateMaterialTypeCostChartJson([FromBody] SupplierCostRequest request)
 		{
-			var materialTypes = data.Select(d => d.material_type).Distinct().ToList();
+            //График сравнения количества материалов от разных поставщиков в зависимости от грузополучателя(гистограмма)
+            var suppliers = _context.Dok_SF
+                .Where(d => request.INNs.Contains(d.INN) && d.material == request.Material)
+                .Select(d => d.INN)
+                .Distinct()
+                .ToList();
 
-			var chartData = new
-			{
-				labels = materialTypes,
-				datasets = materialTypes.Select(materialType => new
-				{
-					label = materialType,
-					data = data.Where(d => d.material_type == materialType).Select(d => d.cost)
-				})
-			};
+            if (!suppliers.Any())
+                return NotFound();
 
-			return JsonSerializer.Serialize(new { bar = chartData });
-		}
+            var chartData = new
+            {
+                labels = suppliers,
+                datasets = new[]
+                {
+                    new
+                    {
+                        label = "Количество материалов от разных поставщиков в зависимости от грузополучателя",
+                        data = suppliers.Select(supplier => _context.Dok_SF
+                            .Where(d => d.INN == supplier && d.material == request.Material)
+                            .Select(d => d.quan)
+							 )
+                            .ToList(),
+                        backgroundColor = suppliers.Select(_ => $"rgba({new Random().Next(0, 255)}, {new Random().Next(0, 255)}, {new Random().Next(0, 255)}, 0.8)").ToList()
+                    }
+                }
+            };
+
+            return Ok(new { bar = chartData });
+        }
 
 		[HttpPost]
 		[Route("9GenerateMaterialCostOverTimeChartJson")]
