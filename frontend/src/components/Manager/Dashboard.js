@@ -43,9 +43,6 @@ const data = {
     datasets: [
       {
         label: 'Dataset 1',
-        backgroundColor: 'rgba(75,192,192,1)',
-        borderColor: 'rgba(0,0,0,1)',
-        borderWidth: 2,
         data: [65, 59, 80, 81, 56, 55, 40],
       },
     ],
@@ -108,10 +105,10 @@ const ManagerDashboard = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Procurement Analytics
+            Страница руководителя
           </Typography>
           <Button color="inherit" onClick={handleLogout}>
-            Logout
+            Выход
           </Button>
         </Toolbar>
       </AppBar>

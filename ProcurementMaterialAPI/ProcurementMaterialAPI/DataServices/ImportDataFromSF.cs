@@ -62,7 +62,7 @@ namespace ProcurementMaterialAPI.DataServices
 
                     var entity = new ModelDok_SF();
 
-                    for (int colIdx = 1; colIdx < row.LastCellNum; colIdx++)
+                    for (int colIdx = 0; colIdx < row.LastCellNum; colIdx++)
                     {
                         ICell cell = row.GetCell(colIdx);
                         if (cell == null) continue;

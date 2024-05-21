@@ -78,7 +78,7 @@ namespace ProcurementMaterialAPI.Controllers
 			// Сохранение файла на сервере
 			using (var stream = new FileStream(filePath, FileMode.Create))
 			{
-				await file.CopyToAsync(stream);
+				file.CopyTo(stream);
 			}
 
 			try
