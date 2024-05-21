@@ -61,5 +61,40 @@ namespace ProcurementMaterialAPI.Controllers
 
 			return Ok(fileType.GetDescription());
 		}
+
+		[HttpPost("sf")]
+		public async Task<ActionResult> UploadSFFile(IFormFile file)
+		{
+			if (file == null || file.Length == 0)
+			{
+				return BadRequest("No file uploaded.");
+			}
+
+			if (!Directory.Exists("Temp"))
+				Directory.CreateDirectory("Temp");
+
+			string filePath = Path.Combine("Temp", file.FileName);
+
+			// Сохранение файла на сервере
+			using (var stream = new FileStream(filePath, FileMode.Create))
+			{
+				await file.CopyToAsync(stream);
+			}
+
+			try
+			{
+				// Обработка файла и чтение данных из Excel
+				ImportDataFromSF excelReader = new ImportDataFromSF(_context, filePath);
+				excelReader.ReadExcelFile();
+			}
+			catch (Exception ex)
+			{
+				return Problem(ex.Message);
+			}
+
+			System.IO.File.Delete(filePath);
+
+			return Ok();
+		}
 	}
 }

@@ -22,7 +22,7 @@ namespace ProcurementMaterialAPI.DataServices
 			_resourceSapSF = new ResourceManager("ProcurementMaterialAPI.Resources.ResourceSapSF", Assembly.GetExecutingAssembly());
 		}
 
-        public void ReadExcelFile(DateOnly date)
+        public void ReadExcelFile()
         {
 
             using (FileStream fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read))
@@ -60,7 +60,7 @@ namespace ProcurementMaterialAPI.DataServices
                     }
                     if (isEmptyRow) continue;
 
-                    var entity = new InformationSystemsMatch();
+                    var entity = new ModelDok_SF();
 
                     for (int colIdx = 1; colIdx < row.LastCellNum; colIdx++)
                     {
@@ -78,23 +78,19 @@ namespace ProcurementMaterialAPI.DataServices
                         }
                     }
 
-                    entity.Date = date;
-
-                    _context.InformationSystemsMatch.Add(entity);
+                    _context.Dok_SF.Add(entity);
                     if (rowIdx % 1000 == 0)
                         _context.SaveChanges();
                 }
             }
-
-            return;
         }
 
-        private void SetPropertyValue(InformationSystemsMatch entity, string propertyName, string value)
+        private void SetPropertyValue(ModelDok_SF entity, string propertyName, string value)
 		{
-			var property = typeof(InformationSystemsMatch).GetProperty(propertyName);
+			var property = typeof(ModelDok_SF).GetProperty(propertyName);
 			if (property != null)
 			{
-				if (property.PropertyType == typeof(int))
+				if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
 				{
 					if (int.TryParse(value, out int intValue))
 					{
