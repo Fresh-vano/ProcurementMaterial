@@ -117,40 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BEI" xml:space="preserve">
-    <value>Базовая ЕИ</value>
+  <data name="Базовая ЕИ" xml:space="preserve">
+    <value>BEI</value>
   </data>
-  <data name="CountEnd" xml:space="preserve">
-    <value>Остаток на конец</value>
+  <data name="Вид материала" xml:space="preserve">
+    <value>GroupMaterialCode</value>
   </data>
-  <data name="CountOutgo" xml:space="preserve">
-    <value>КолОтпБезВнутр</value>
+  <data name="Группа материалов" xml:space="preserve">
+    <value>SubGroupMaterialCode</value>
   </data>
-  <data name="DepartmentName" xml:space="preserve">
-    <value>Цех</value>
+  <data name="КолОтпБезВнутр" xml:space="preserve">
+    <value>CountOutgo</value>
   </data>
-  <data name="GroupMaterialCode" xml:space="preserve">
-    <value>Вид материала</value>
+  <data name="Материал" xml:space="preserve">
+    <value>MaterialName</value>
   </data>
-  <data name="GroupMaterialName" xml:space="preserve">
-    <value>Наимен. ВидаМатер</value>
+  <data name="Наимен. ВидаМатер" xml:space="preserve">
+    <value>GroupMaterialName</value>
   </data>
-  <data name="MaterialName" xml:space="preserve">
-    <value>Материал</value>
+  <data name="Наимен. материала" xml:space="preserve">
+    <value>MaterialNom</value>
   </data>
-  <data name="MaterialNom" xml:space="preserve">
-    <value>Наимен. материала</value>
+  <data name="НаименГруппыМтр" xml:space="preserve">
+    <value>SubGroupMaterialName</value>
   </data>
-  <data name="SubGroupMaterialCode" xml:space="preserve">
-    <value>Группа материалов</value>
+  <data name="Остаток на конец" xml:space="preserve">
+    <value>CountEnd</value>
   </data>
-  <data name="SubGroupMaterialName" xml:space="preserve">
-    <value>НаименГруппыМтр</value>
+  <data name="Стоимость на конец" xml:space="preserve">
+    <value>SumEnd</value>
   </data>
-  <data name="SumEnd" xml:space="preserve">
-    <value>Стоимость на конец</value>
+  <data name="СтоимОтпБезВнутр" xml:space="preserve">
+    <value>SumOutgo</value>
   </data>
-  <data name="SumOutgo" xml:space="preserve">
-    <value>СтоимОтпБезВнутр</value>
+  <data name="Цех" xml:space="preserve">
+    <value>DepartmentName</value>
   </data>
 </root>
