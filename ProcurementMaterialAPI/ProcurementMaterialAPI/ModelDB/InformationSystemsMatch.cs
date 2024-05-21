@@ -63,6 +63,11 @@ namespace ProcurementMaterialAPI.ModelDB
         /// </summary>
         public DateOnly Date { get; set; }
 
+        /// <summary>
+        /// Тип предприятия
+        /// </summary>
+        public Enums.BE? BE {  get; set; }
+
         ///Прочее 
         
         ///<summary>

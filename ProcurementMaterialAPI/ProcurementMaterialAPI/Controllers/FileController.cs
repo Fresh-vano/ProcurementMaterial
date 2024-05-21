@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProcurementMaterialAPI.Context;
 using ProcurementMaterialAPI.DataServices;
+using ProcurementMaterialAPI.Enums;
 using ProcurementMaterialAPI.ModelDB;
 
 namespace ProcurementMaterialAPI.Controllers
@@ -24,7 +25,7 @@ namespace ProcurementMaterialAPI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<List<List<string>>>> UploadFile(IFormFile file, DateOnly date)
+		public async Task<ActionResult<List<List<string>>>> UploadFile(IFormFile file, string dateString)
 		{
 			if (file == null || file.Length == 0)
 			{
@@ -42,14 +43,14 @@ namespace ProcurementMaterialAPI.Controllers
 				await file.CopyToAsync(stream);
 			}
 
-			List<InformationSystemsMatch> result;
-			string fileType;
+			Enums.BE fileType;
 
 			try
 			{
+				DateOnly date = DateOnly.Parse(dateString);
 				// Обработка файла и чтение данных из Excel
 				ImportDataFromExcel excelReader = new ImportDataFromExcel(_context, filePath);
-				(fileType, result) = excelReader.ReadExcelFile(date);
+				fileType = excelReader.ReadExcelFile(date).Value;
 			}
 			catch (Exception ex)
 			{
@@ -58,7 +59,7 @@ namespace ProcurementMaterialAPI.Controllers
 
 			System.IO.File.Delete(filePath);
 
-			return Ok(result);
+			return Ok(fileType.GetDescription());
 		}
 	}
 }

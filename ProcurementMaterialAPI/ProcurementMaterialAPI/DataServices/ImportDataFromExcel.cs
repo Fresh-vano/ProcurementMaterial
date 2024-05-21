@@ -24,10 +24,9 @@ namespace ProcurementMaterialAPI.DataServices
 			_resourceSap = new ResourceManager("ProcurementMaterialAPI.Resources.ResourceSap", Assembly.GetExecutingAssembly());
 		}
 
-		public (string fileType, List<InformationSystemsMatch> data) ReadExcelFile(DateOnly date)
+		public Enums.BE? ReadExcelFile(DateOnly date)
 		{
-			var data = new List<InformationSystemsMatch>();
-			string fileType = "Unknown";
+			Enums.BE? fileType = null;
 
 			using (FileStream fs = new FileStream(_filePath, FileMode.Open, FileAccess.Read))
 			{
@@ -48,11 +47,11 @@ namespace ProcurementMaterialAPI.DataServices
 				// Определение типа файла по заголовкам
 				if (headers.Values.Any(header => !string.IsNullOrEmpty(_resourceKis.GetString(header))))
 				{
-					fileType = "KIS";
+					fileType = Enums.BE.BUKRS_2000;
 				}
 				else if (headers.Values.Any(header => !string.IsNullOrEmpty(_resourceSap.GetString(header))))
 				{
-					fileType = "SAP";
+					fileType = Enums.BE.BUKRS_1300;
 				}
 
 				// Чтение данных
@@ -84,11 +83,11 @@ namespace ProcurementMaterialAPI.DataServices
 						string cellValue = cell.ToString();
 
 						string propertyName = null;
-						if (fileType == "KIS")
+						if (fileType == Enums.BE.BUKRS_2000)
 						{
 							propertyName = _resourceKis.GetString(header);
 						}
-						else if (fileType == "SAP")
+						else if (fileType == Enums.BE.BUKRS_1300)
 						{
 							propertyName = _resourceSap.GetString(header);
 						}
@@ -100,14 +99,15 @@ namespace ProcurementMaterialAPI.DataServices
 					}
 
 					entity.Date = date;
+					entity.BE = fileType;
 
 					_context.InformationSystemsMatch.Add(entity);
-					_context.SaveChanges();
-					data.Add(entity);
+					if (rowIdx % 1000 == 0)
+						_context.SaveChanges();
 				}
 			}
 
-			return (fileType, data);
+			return fileType;
 		}
 
 		private void SetPropertyValue(InformationSystemsMatch entity, string propertyName, string value)
@@ -115,21 +115,21 @@ namespace ProcurementMaterialAPI.DataServices
 			var property = typeof(InformationSystemsMatch).GetProperty(propertyName);
 			if (property != null)
 			{
-				if (property.PropertyType == typeof(int))
+				if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
 				{
 					if (int.TryParse(value, out int intValue))
 					{
 						property.SetValue(entity, intValue);
 					}
 				}
-				else if (property.PropertyType == typeof(float))
+				else if (property.PropertyType == typeof(float) || property.PropertyType == typeof(float?))
 				{
 					if (float.TryParse(value, out float floatValue))
 					{
 						property.SetValue(entity, floatValue);
 					}
 				}
-				else if (property.PropertyType == typeof(double))
+				else if (property.PropertyType == typeof(double) || property.PropertyType == typeof(double?))
 				{
 					if (double.TryParse(value, out double doubleValue))
 					{
