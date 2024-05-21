@@ -21,6 +21,7 @@ import { useAuth } from '../../utils/auth';
 import { useNavigate } from 'react-router-dom';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FileUpload from './FileUpload';
 
 ChartJS.register(
   CategoryScale,
@@ -225,34 +226,37 @@ const ChartBuilder = () => {
               <MenuItem value="line">Line</MenuItem>
             </TextField>
             <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: '20px' }}
-              onClick={handleSaveChart}
-              startIcon={<SaveIcon />}
-            >
-              Save Chart
-            </Button>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper style={{ padding: '20px' }}>{selectedXField && selectedYField && renderChart()}</Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h5">Saved Charts</Typography>
-          {savedCharts.map((chart, index) => (
-            <Paper key={index} style={{ padding: '20px', marginTop: '20px' }}>
-              <Typography>{`${chart.entity}: ${chart.xField} ${chart.operation} ${chart.customValue}`}</Typography>
-              <IconButton onClick={() => handleDeleteChart(index)}>
-                <DeleteIcon />
-              </IconButton>
-              {/* You can add more details about the chart and a button to load/render the saved chart */}
-            </Paper>
-          ))}
-        </Grid>
-      </Grid>
-    </Container>
-  );
+variant="contained"
+color="primary"
+style={{ marginTop: '20px' }}
+onClick={handleSaveChart}
+startIcon={<SaveIcon />}
+>
+Save Chart
+</Button>
+</Paper>
+</Grid>
+<Grid item xs={12}>
+<Paper style={{ padding: '20px' }}>{selectedXField && selectedYField && renderChart()}</Paper>
+</Grid>
+<Grid item xs={12}>
+<Typography variant="h5">Saved Charts</Typography>
+{savedCharts.map((chart, index) => (
+<Paper key={index} style={{ padding: '20px', marginTop: '20px' }}>
+<Typography>{`${chart.entity}: ${chart.xField} ${chart.operation} ${chart.customValue}`}</Typography>
+<IconButton onClick={() => handleDeleteChart(index)}>
+<DeleteIcon />
+</IconButton>
+{/* You can add more details about the chart and a button to load/render the saved chart */}
+</Paper>
+))}
+</Grid>
+<Grid item xs={12}>
+<FileUpload />
+</Grid>
+</Grid>
+</Container>
+);
 };
 
 export default ChartBuilder;

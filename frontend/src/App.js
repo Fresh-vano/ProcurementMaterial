@@ -13,7 +13,6 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route
             path="/manager"
             element={
@@ -38,6 +37,8 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Login />} />
         </Routes>
       </Router>
     </AuthProvider>

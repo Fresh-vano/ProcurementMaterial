@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ProcurementMaterialAPI.Context;
+using ProcurementMaterialAPI.DataServices;
 using ProcurementMaterialAPI.ModelDB;
 
 namespace ProcurementMaterialAPI.Controllers
@@ -22,15 +23,32 @@ namespace ProcurementMaterialAPI.Controllers
 			return _context.InformationSystemsMatch.ToList();
 		}
 
-        [HttpPost(Name = "GetData")]
-        public ActionResult<List<List<string>>> GetData()
-        {
-            string filePath = "DataServices/СинТЗ-12.2023.xlsx"; // Укажите правильный путь к вашему Excel файлу
-            ImportDataFromExcel excelReader = new ImportDataFromExcel(filePath);
-            List<List<string>> excelData = excelReader.ReadExcelFile();
-			JsonResult json = new JsonResult(excelData);
-            // Возвращаем данные в формате JSON
-            return Ok(excelData);
-        }
-    }
+		[HttpPost]
+		public async Task<ActionResult<List<List<string>>>> UploadFile(IFormFile file)
+		{
+			if (file == null || file.Length == 0)
+			{
+				return BadRequest("No file uploaded.");
+			}
+
+			if (!Directory.Exists("Temp"))
+				Directory.CreateDirectory("Temp");
+
+			string filePath = Path.Combine("Temp", file.FileName);
+
+			// Сохранение файла на сервере
+			using (var stream = new FileStream(filePath, FileMode.Create))
+			{
+				await file.CopyToAsync(stream);
+			}
+
+			// Обработка файла и чтение данных из Excel
+			ImportDataFromExcel excelReader = new ImportDataFromExcel(filePath);
+			var result = excelReader.ReadExcelFile(_context);
+
+			System.IO.File.Delete(filePath);
+
+			return Ok(result);
+		}
+	}
 }
