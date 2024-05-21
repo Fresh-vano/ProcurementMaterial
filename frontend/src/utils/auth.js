@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = async (username, password, callback) => {
-    const response = await axios.post('http://localhost:8080/api/data/auth', {
+    const response = await axios.post('http://localhost:8080/User/auth', {
       username,
       password,
     });
