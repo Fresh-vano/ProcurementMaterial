@@ -78,7 +78,30 @@ namespace ProcurementMaterialAPI.DataServices
                         }
                     }
 
-                    _context.Dok_SF.Add(entity);
+					bool exists = _context.Dok_SF
+						.Any(e =>
+							e.buisnes_number == entity.buisnes_number &&
+							e.buisnes_consignee == entity.buisnes_consignee &&
+							e.fact_number == entity.fact_number &&
+							e.fact_pos == entity.fact_pos &&
+							e.material == entity.material &&
+							e.material_name == entity.material_name &&
+							e.material_type == entity.material_type &&
+							e.date_budat == entity.date_budat &&
+							e.material_group == entity.material_group &&
+							e.material_group_name == entity.material_group_name &&
+							e.EI == entity.EI &&
+							e.INN == entity.INN &&
+							e.quan == entity.quan &&
+							e.cost == entity.cost &&
+							e.Direction == entity.Direction &&
+							e.Department == entity.Department &&
+							e.normalization == entity.normalization
+						);
+
+					if (exists)
+						_context.Dok_SF.Add(entity);
+
                     if (rowIdx % 1000 == 0)
                         _context.SaveChanges();
                 }

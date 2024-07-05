@@ -19,11 +19,11 @@ namespace ProcurementMaterialAPI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<List<List<string>>>> UploadFile(IFormFile file, string dateString)
+		public async Task<ActionResult<List<List<string>>>> UploadFile(IFormFileCollection files, string dateString)
 		{
 			try
 			{
-				if (file == null || file.Length == 0)
+				if (files == null || files.Count == 0)
 				{
 					return BadRequest("No file uploaded.");
 				}
@@ -31,31 +31,38 @@ namespace ProcurementMaterialAPI.Controllers
 				if (!Directory.Exists("Temp"))
 					Directory.CreateDirectory("Temp");
 
-				string filePath = Path.Combine("Temp", file.FileName);
-
-				// Сохранение файла на сервере
-				using (var stream = new FileStream(filePath, FileMode.Create))
+				foreach (var file in files)
 				{
-					await file.CopyToAsync(stream);
+					if (!file.FileName.Contains(".xlsx"))
+					{
+						return Problem("Only .xlsx files are allowed.");
+					}
+					string filePath = Path.Combine("Temp", file.FileName);
+
+					// Сохранение файла на сервере
+					using (var stream = new FileStream(filePath, FileMode.Create))
+					{
+						await file.CopyToAsync(stream);
+					}
+
+					Enums.BE fileType;
+
+					try
+					{
+						DateOnly date = DateOnly.Parse(dateString);
+						// Обработка файла и чтение данных из Excel
+						ImportDataFromExcel excelReader = new ImportDataFromExcel(_context, filePath);
+						fileType = excelReader.ReadExcelFile(date).Value;
+					}
+					catch (Exception ex)
+					{
+						return Problem(ex.Message);
+					}
+
+					System.IO.File.Delete(filePath);
 				}
 
-				Enums.BE fileType;
-
-				try
-				{
-					DateOnly date = DateOnly.Parse(dateString);
-					// Обработка файла и чтение данных из Excel
-					ImportDataFromExcel excelReader = new ImportDataFromExcel(_context, filePath);
-					fileType = excelReader.ReadExcelFile(date).Value;
-				}
-				catch (Exception ex)
-				{
-					return Problem(ex.Message);
-				}
-
-				System.IO.File.Delete(filePath);
-
-				return Ok(fileType.GetDescription());
+				return Ok("added");
 			}
 			catch(Exception ex)
 			{
@@ -64,11 +71,11 @@ namespace ProcurementMaterialAPI.Controllers
 		}
 
 		[HttpPost("sf")]
-		public ActionResult UploadSFFile(IFormFile file)
+		public ActionResult UploadSFFile(IFormFileCollection files)
 		{
 			try
 			{
-				if (file == null || file.Length == 0)
+				if (files == null || files.Count == 0)
 				{
 					return BadRequest("No file uploaded.");
 				}
@@ -76,28 +83,34 @@ namespace ProcurementMaterialAPI.Controllers
 				if (!Directory.Exists("Temp"))
 					Directory.CreateDirectory("Temp");
 
-				string filePath = Path.Combine("Temp", file.FileName);
-
-				// Сохранение файла на сервере
-				using (var stream = new FileStream(filePath, FileMode.Create))
+				foreach (var file in files)
 				{
-					file.CopyTo(stream);
-				}
-			
-				try
-				{
-					// Обработка файла и чтение данных из Excel
-					ImportDataFromSF excelReader = new ImportDataFromSF(_context, filePath);
-					excelReader.ReadExcelFile();
-				}
-				catch (Exception ex)
-				{
-					return Problem(ex.Message);
-				}
+					if (!file.FileName.Contains(".xlsx"))
+					{
+						return Problem("Only .xlsx files are allowed.");
+					}
+					string filePath = Path.Combine("Temp", file.FileName);
 
-				System.IO.File.Delete(filePath);
+					// Сохранение файла на сервере
+					using (var stream = new FileStream(filePath, FileMode.Create))
+					{
+						file.CopyTo(stream);
+					}
 
-				return Ok();
+					try
+					{
+						// Обработка файла и чтение данных из Excel
+						ImportDataFromSF excelReader = new ImportDataFromSF(_context, filePath);
+						excelReader.ReadExcelFile();
+					}
+					catch (Exception ex)
+					{
+						return Problem(ex.Message);
+					}
+
+					System.IO.File.Delete(filePath);
+				}
+				return Ok("added");
 			}
 			catch (Exception ex)
 			{

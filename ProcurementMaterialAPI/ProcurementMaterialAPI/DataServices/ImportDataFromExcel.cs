@@ -101,7 +101,28 @@ namespace ProcurementMaterialAPI.DataServices
 					entity.Date = date;
 					entity.BE = fileType;
 
-					_context.InformationSystemsMatch.Add(entity);
+					bool exists = _context.InformationSystemsMatch
+						.Any(e =>
+							e.Date == entity.Date &&
+							e.BE == entity.BE &&
+							e.MaterialName == entity.MaterialName &&
+							e.MaterialNom == entity.MaterialNom &&
+							e.BEI == entity.BEI &&
+							e.DepartmentName == entity.DepartmentName &&
+							e.GroupMaterialCode == entity.GroupMaterialCode &&
+							e.GroupMaterialName == entity.GroupMaterialName &&
+							e.SubGroupMaterialCode == entity.SubGroupMaterialCode &&
+							e.SubGroupMaterialName == entity.SubGroupMaterialName &&
+							e.CountOutgo == entity.CountOutgo &&
+							e.SumOutgo == entity.SumOutgo &&
+							e.CountEnd == entity.CountEnd &&
+							e.SumEnd == entity.SumEnd &&
+							e.DepartmentCode == entity.DepartmentCode
+						);
+
+					if (exists)
+						_context.InformationSystemsMatch.Add(entity);
+
 					if (rowIdx % 1000 == 0)
 						_context.SaveChanges();
 				}
