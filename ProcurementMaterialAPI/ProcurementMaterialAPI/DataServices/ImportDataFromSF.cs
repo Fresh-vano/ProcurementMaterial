@@ -99,7 +99,7 @@ namespace ProcurementMaterialAPI.DataServices
 							e.normalization == entity.normalization
 						);
 
-					if (exists)
+					if (!exists)
 						_context.Dok_SF.Add(entity);
 
                     if (rowIdx % 1000 == 0)

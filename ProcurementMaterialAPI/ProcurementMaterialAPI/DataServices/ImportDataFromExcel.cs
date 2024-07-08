@@ -120,7 +120,7 @@ namespace ProcurementMaterialAPI.DataServices
 							e.DepartmentCode == entity.DepartmentCode
 						);
 
-					if (exists)
+					if (!exists)
 						_context.InformationSystemsMatch.Add(entity);
 
 					if (rowIdx % 1000 == 0)
