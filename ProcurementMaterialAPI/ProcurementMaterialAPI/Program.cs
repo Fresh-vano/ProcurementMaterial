@@ -7,6 +7,11 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration
+	.SetBasePath(Directory.GetCurrentDirectory())
+	.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+	.AddEnvironmentVariables();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -14,7 +19,8 @@ builder.Services.AddControllersWithViews().AddJsonOptions(o => o.JsonSerializerO
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<MaterialDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<MaterialDbContext>(options =>
+	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(options =>
 {
@@ -50,6 +56,12 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+	var db = scope.ServiceProvider.GetRequiredService<MaterialDbContext>();
+	db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

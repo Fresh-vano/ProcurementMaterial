@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-    restart: always
+    restart: unless-stopped
 
   api:
     build:
@@ -29,18 +29,18 @@ services:
       - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=Materials;User=sa;Password=Passw0rd;TrustServerCertificate=True;
     ports:
       - "8080:8080"
+    networks:
+      - app-network
     depends_on:
       mssql:
         condition: service_healthy
-    networks:
-      - app-network
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
-    restart: always
+    restart: unless-stopped
 
   frontend:
     build:
@@ -50,10 +50,7 @@ services:
       - "3000:3000"
     networks:
       - app-network
-    depends_on:
-      api:
-        condition: service_healthy
-    restart: always
+    restart: unless-stopped
 
 networks:
   app-network:
