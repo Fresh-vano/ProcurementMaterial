@@ -15,13 +15,12 @@ builder.Services.AddDbContext<MaterialDbContext>(options => options.UseSqlServer
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("AllowAllOrigins",
-		builder =>
-		{
-			builder.AllowAnyOrigin()
-				   .AllowAnyMethod()
-				   .AllowAnyHeader();
-		});
+	options.AddPolicy("AllowOrigin",
+			builder => builder
+				.WithOrigins("http://your-frontend-domain.com") //TO DO: поменять
+				.AllowAnyHeader()
+				.AllowAnyMethod()
+				.AllowCredentials());
 });
 
 var app = builder.Build();
@@ -35,7 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowOrigin");
 
 app.UseAuthorization();
 

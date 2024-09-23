@@ -6,15 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FileUpload from './FileUpload';
 import GraphBuilder from './GraphBuilder';
+import LogoutButton from '../Auth/LogoutButton';
 
 const ChartBuilder = () => {
   const [savedCharts, setSavedCharts] = useState([]);
   const { logout } = useAuth();
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout(() => navigate('/login'));
-  };
 
   const handleSaveChart = (newChart) => {
     setSavedCharts([...savedCharts, newChart]);
@@ -32,9 +29,7 @@ const ChartBuilder = () => {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Страница группы отчета
           </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Выход
-          </Button>
+          <LogoutButton/>
         </Toolbar>
       </AppBar>
       <Container>

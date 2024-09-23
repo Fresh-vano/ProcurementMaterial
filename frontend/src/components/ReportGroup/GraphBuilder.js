@@ -1,6 +1,6 @@
 // src/components/ReportGroup/GraphBuilder.js
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { Grid, TextField, MenuItem, Paper, Button, Typography } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import { Bar, Pie, Line } from 'react-chartjs-2';
@@ -25,7 +25,7 @@ const GraphBuilder = ({ onSaveChart }) => {
       const fetchFields = async () => {
         if (selectedEntity) {
           const endpoint = `http://localhost:8080/FieldInfo/${entities[selectedEntity]}`;
-          const response = await axios.get(endpoint);
+          const response = await api.get(endpoint);
           setFields(response.data);
         }
       };

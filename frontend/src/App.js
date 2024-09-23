@@ -5,7 +5,6 @@ import Login from './components/Auth/Login';
 import ManagerDashboard from './components/Manager/Dashboard';
 import PurchaserRequestView from './components/Purchaser/RequestView';
 import ReportGroupChartBuilder from './components/ReportGroup/ChartBuilder';
-import PrivateRoute from './routes/PrivateRoute';
 import { AuthProvider, RequireAuth } from './utils/auth';
 
 function App() {
@@ -38,7 +37,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Login />} />
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </Router>
     </AuthProvider>

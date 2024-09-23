@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { Button, Snackbar, Alert, Checkbox, FormControlLabel, TextField, Box, CircularProgress, Typography } from '@mui/material';
 
 const FileUpload = () => {
@@ -9,6 +9,7 @@ const FileUpload = () => {
   const [open, setOpen] = useState(false);
   const [isInventoryFile, setIsInventoryFile] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState('');
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -16,6 +17,10 @@ const FileUpload = () => {
 
   const handleCheckboxChange = (event) => {
     setIsInventoryFile(event.target.checked);
+  };
+
+  const handleDateChange = (event) => {
+    setDate(event.target.value);
   };
 
   const handleUpload = async () => {
@@ -26,15 +31,16 @@ const FileUpload = () => {
     }
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('files', file);
 
     const url = isInventoryFile ? 'http://localhost:8080/File' : 'http://localhost:8080/File/sf';
 
     setLoading(true);
     try {
-      await axios.post(url, formData, {
+      await api.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          ...(isInventoryFile && { 'dateString': date }), 
         },
       });
       setSuccess('File uploaded successfully!');
@@ -69,6 +75,15 @@ const FileUpload = () => {
           }
           label="Файл материалов"
         />
+        {isInventoryFile && (
+          <TextField
+            type="date"
+            value={date}
+            onChange={handleDateChange}
+            fullWidth
+            sx={{ mb: 2 }}
+          />
+        )}
         <Button variant="contained" color="primary" onClick={handleUpload} disabled={loading}>
           {loading ? <CircularProgress size={24} /> : 'Загрузить'}
         </Button>

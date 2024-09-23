@@ -3,9 +3,11 @@ using ProcurementMaterialAPI.DTOs;
 using ProcurementMaterialAPI.ModelDB;
 using System.Reflection;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProcurementMaterialAPI.Controllers
 {
+	[Authorize]
 	[ApiController]
 	[Route("[controller]")]
 	public class FieldInfoController : ControllerBase

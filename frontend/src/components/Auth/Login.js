@@ -10,22 +10,10 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    login(username, password, () => {
-      switch (username) {
-        case 'manager':
-          navigate('/manager');
-          break;
-        case 'purchaser':
-          navigate('/purchaser');
-          break;
-        case 'report_group':
-          navigate('/report-group');
-          break;
-        default:
-          navigate('/login');
-      }
+    await login(username, password, () => {
+      navigate('/');
     });
   };
 

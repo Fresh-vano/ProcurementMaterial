@@ -18,10 +18,11 @@ import {
 import { Bar, Line } from 'react-chartjs-2';
 import { useAuth } from '../../utils/auth';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import Tile from '../../Tile';
+import LogoutButton from '../Auth/LogoutButton';
 
 ChartJS.register(
   CategoryScale,
@@ -49,7 +50,7 @@ const ManagerDashboard = () => {
   useEffect(() => {
     const fetchGroupOptions = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/chart/GetUniqueGroup');
+        const response = await api.get('http://localhost:8080/chart/GetUniqueGroup');
         setGroupOptions(response.data);
       } catch (error) {
         console.error('Error fetching group options:', error);
@@ -62,8 +63,8 @@ const ManagerDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const receiptsAndStocksResponse = await axios.get('http://localhost:8080/chart/GenerateReceiptsAndStocksChartJson');
-        const monthlyExpensesResponse = await axios.get('http://localhost:8080/chart/GenerateMonthlyExpensesChartJson');
+        const receiptsAndStocksResponse = await api.get('http://localhost:8080/chart/GenerateReceiptsAndStocksChartJson');
+        const monthlyExpensesResponse = await api.get('http://localhost:8080/chart/GenerateMonthlyExpensesChartJson');
 
         setChartsData({
           receiptsAndStocks: receiptsAndStocksResponse.data.chart,
@@ -82,15 +83,11 @@ const ManagerDashboard = () => {
     setSelectedGroup(selected);
 
     try {
-      const response = await axios.post('http://localhost:8080/chart/GenerateReceiptsAndStocksChartJson', { MaterialName: selected });
+      const response = await api.post('http://localhost:8080/chart/GenerateReceiptsAndStocksChartJson', { MaterialName: selected });
       setGroupChartData(response.data.chart);
     } catch (error) {
       console.error('Error fetching group chart data:', error);
     }
-  };
-
-  const handleLogout = () => {
-    logout(() => navigate('/login'));
   };
 
   const handleDownloadPDF = async () => {
@@ -112,9 +109,7 @@ const ManagerDashboard = () => {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Страница руководителя
           </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Выход
-          </Button>
+          <LogoutButton/>
           <Button color="inherit" onClick={handleDownloadPDF}>
             Сохранить в PDF
           </Button>

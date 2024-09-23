@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using ProcurementMaterialAPI.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProcurementMaterialAPI.Controllers
 {
-
+	[Authorize(Roles = "manager,purchaser")]
 	[ApiController]
 	[Route("[controller]")]
 	public class ChartController : ControllerBase

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProcurementMaterialAPI.Context;
 using ProcurementMaterialAPI.DataServices;
@@ -6,6 +7,7 @@ using ProcurementMaterialAPI.ModelDB;
 
 namespace ProcurementMaterialAPI.Controllers
 {
+	[Authorize(Roles = "report_group")]
 	[ApiController]
 	[Route("[controller]")]
 	public class FileController : ControllerBase

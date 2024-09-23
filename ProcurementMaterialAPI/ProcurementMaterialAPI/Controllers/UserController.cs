@@ -4,6 +4,10 @@ using ProcurementMaterialAPI.Context;
 using ProcurementMaterialAPI.DTOs;
 using ProcurementMaterialAPI.Enums;
 using ProcurementMaterialAPI.ModelDB;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ProcurementMaterialAPI.Controllers
 {
@@ -27,12 +31,14 @@ namespace ProcurementMaterialAPI.Controllers
 				return BadRequest("User already exists.");
 			}
 
+			string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
 			var newUser = new UserModel
 			{
 				UserName = username,
 				UserShortName = userShortName,
 				UserRole = userRole,
-				Password = password
+				PasswordHash = passwordHash
 			};
 
 			_context.User.Add(newUser);
@@ -48,15 +54,34 @@ namespace ProcurementMaterialAPI.Controllers
 
 			if (user == null)
 			{
-				return NotFound();
+				return NotFound("User not found.");
 			}
 
-			if (userDto.Password != user.Password)
+			// Проверка пароля
+			bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userDto.Password, user.PasswordHash);
+			if (!isPasswordValid)
 			{
-				return BadRequest();
+				return Unauthorized("Invalid password.");
 			}
 
-			return Ok(user.UserRole.ToString().ToLower());
+			// Создание JWT токена
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY") ?? "YourSuperSecretKey123456789101112131415");
+			var tokenDescriptor = new SecurityTokenDescriptor
+			{
+				Subject = new ClaimsIdentity(new Claim[]
+				{
+					new Claim(ClaimTypes.Name, user.UserName),
+					new Claim(ClaimTypes.Role, user.UserRole.ToString())
+				}),
+				Expires = DateTime.UtcNow.AddHours(1),
+				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+			};
+			var token = tokenHandler.CreateToken(tokenDescriptor);
+			var tokenString = tokenHandler.WriteToken(token);
+
+			// Возвращаем токен клиенту
+			return Ok(new { Token = tokenString });
 		}
 	}
 }

@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProcurementMaterialAPI.Context;
 using ProcurementMaterialAPI.ModelDB;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace ProcurementMaterialAPI.Controllers
 {
+	[Authorize(Roles = "purchaser")]
 	[ApiController]
 	[Route("[controller]")]
 	public class TableController : ControllerBase

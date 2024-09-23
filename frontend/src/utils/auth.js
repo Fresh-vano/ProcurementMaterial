@@ -1,7 +1,7 @@
-// src/utils/auth.js
-import {Navigate} from "react-router-dom"
 import React, { createContext, useContext, useState } from 'react';
-import axios from "axios";
+import { Navigate } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import api from '../api'; 
 
 const AuthContext = createContext();
 
@@ -9,29 +9,33 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = async (username, password, callback) => {
-    try
-    {
-      await axios.post('http://localhost:8080/User/auth', {
+    try {
+      const response = await api.post('/user/auth', {
         username: username,
         password: password,
-      }).then(res => {
-        if (res.status === 200) {
-          const role = res.data;
-          setUser({ username, roles: [role] });
-          callback();
-        }
-      }).catch(res => {
-        alert('Неверный пароль!');
       });
-    }
-    catch
-    {
-      alert('Неверный пароль!');
-    }
 
+      if (response.status === 200) {
+        const { Token } = response.data; 
+        localStorage.setItem('token', Token);
+
+        const decodedToken = jwtDecode(Token);
+        const userRoles = [decodedToken.role]; 
+
+        setUser({ username: decodedToken.unique_name, roles: userRoles });
+        callback();
+      } else {
+        alert('Неверный логин или пароль!');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Неверный логин или пароль!');
+    }
   };
 
   const logout = (callback) => {
+    // Удаляем токен из localStorage
+    localStorage.removeItem('token');
     setUser(null);
     callback();
   };
@@ -52,8 +56,19 @@ export const RequireAuth = ({ children, roles }) => {
     return <Navigate to="/login" />;
   }
 
+  const token = localStorage.getItem('token');
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    if (decodedToken.exp < currentTime) {
+      return <Navigate to="/login" />;
+    }
+  } else {
+    return <Navigate to="/login" />;
+  }
+
   if (roles && !roles.some((role) => user.roles.includes(role))) {
-    return <div>Access Denied</div>;
+    return <div>Доступ запрещен</div>;
   }
 
   return children;

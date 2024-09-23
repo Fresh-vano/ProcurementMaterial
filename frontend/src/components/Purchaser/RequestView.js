@@ -3,9 +3,10 @@ import { AppBar, Toolbar, Typography, Button, Container, Paper, Grid, MenuItem, 
 import { DataGrid } from '@mui/x-data-grid';
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import 'chartjs-plugin-waterfall';
-import axios from 'axios';
+import api from '../../api';
 import { useAuth } from '../../utils/auth';
 import { useNavigate } from 'react-router-dom';
+import LogoutButton from '../Auth/LogoutButton';
 
 const MAX_ITEMS = 5; // Максимальное количество элементов для отображения в MenuItem
 
@@ -25,7 +26,7 @@ const PurchaserRequestView = () => {
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
-        const res = await axios.get('http://localhost:8080/chart/GetUniqueMaterials');
+        const res = await api.get('http://localhost:8080/chart/GetUniqueMaterials');
         console.log(res)
         setMaterials(res.data);
       } catch (error) {
@@ -42,7 +43,7 @@ const PurchaserRequestView = () => {
     setSelectedInns([]); // Reset selected INNs when material changes
 
       try {
-        const innResponse = await axios.get(`http://localhost:8080/chart/GetUniqueINNsByMaterial?request=${material}`);
+        const innResponse = await api.get(`http://localhost:8080/chart/GetUniqueINNsByMaterial?request=${material}`);
         console.log(innResponse)
         setInnOptions(innResponse.data);
       } catch (error) {
@@ -50,8 +51,8 @@ const PurchaserRequestView = () => {
       }
 
     try {
-      const materialResponse = await axios.get('http://localhost:8080/table/material');
-      const sfResponse = await axios.get('http://localhost:8080/table/sf');
+      const materialResponse = await api.get('http://localhost:8080/table/material');
+      const sfResponse = await api.get('http://localhost:8080/table/sf');
       setMaterialColumns(materialResponse.data.columns);
       setMaterialRows(materialResponse.data.rows);
       setSfColumns(sfResponse.data.columns);
@@ -65,26 +66,22 @@ const PurchaserRequestView = () => {
     setSelectedInns(event.target.value);
   };
 
-  const handleLogout = () => {
-    logout(() => navigate('/login'));
-  };
-
   const generateChartsData = async () => {
     try {
-      const costComparisonResponse = await axios.post('http://localhost:8080/chart/4GenerateSupplierCostComparisonChartJson', {
+      const costComparisonResponse = await api.post('http://localhost:8080/chart/4GenerateSupplierCostComparisonChartJson', {
         material: selectedMaterial,
         INNs: selectedInns
       });
   
-      const costOverTimeResponse = await axios.post('http://localhost:8080/chart/3GenerateCostOverTimeChartJson', {
+      const costOverTimeResponse = await api.post('http://localhost:8080/chart/3GenerateCostOverTimeChartJson', {
         material: selectedMaterial
       });
   
-      const quantityComparisonResponse = await axios.post('http://localhost:8080/chart/7GenerateSupplierQuantityComparisonChartJson', {
+      const quantityComparisonResponse = await api.post('http://localhost:8080/chart/7GenerateSupplierQuantityComparisonChartJson', {
         material: selectedMaterial
       });
       
-      const performanceResponse = await axios.post('http://localhost:8080/chart/GeneratePerformanceChartJson', {
+      const performanceResponse = await api.post('http://localhost:8080/chart/GeneratePerformanceChartJson', {
         material: selectedMaterial,
         INNs: selectedInns
       });
@@ -108,9 +105,7 @@ debugger
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Страница закупщиков
           </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Выход
-          </Button>
+          <LogoutButton/>
         </Toolbar>
       </AppBar>
       <Container>
