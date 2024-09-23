@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
   mssql:
@@ -11,6 +11,13 @@ services:
       - "1433:1433"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Passw0rd' -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: always
 
   api:
     build:
@@ -19,13 +26,21 @@ services:
     container_name: api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=Materuals;User=sa;Password=Passw0rd;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=Materials;User=sa;Password=Passw0rd;TrustServerCertificate=True;
     ports:
       - "8080:8080"
     depends_on:
-      - mssql
+      mssql:
+        condition: service_healthy
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: always
 
   frontend:
     build:
@@ -35,6 +50,10 @@ services:
       - "3000:3000"
     networks:
       - app-network
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: always
 
 networks:
   app-network:

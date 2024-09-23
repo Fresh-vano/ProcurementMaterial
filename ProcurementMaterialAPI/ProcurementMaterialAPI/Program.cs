@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ProcurementMaterialAPI.Context;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +20,33 @@ builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowOrigin",
 			builder => builder
-				.WithOrigins("http://your-frontend-domain.com") //TO DO: поменять
+				.WithOrigins("http://localhost:3000") //TO DO: поменять
 				.AllowAnyHeader()
 				.AllowAnyMethod()
 				.AllowCredentials());
+});
+
+// Добавьте эти строки
+var secretKey = builder.Configuration["JwtSettings:SecretKey"];
+var key = Encoding.UTF8.GetBytes(secretKey);
+
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+	options.RequireHttpsMetadata = false; // Установите в true для продакшена
+	options.SaveToken = true;
+	options.TokenValidationParameters = new TokenValidationParameters
+	{
+		ValidateIssuerSigningKey = true,
+		IssuerSigningKey = new SymmetricSecurityKey(key),
+		ValidateIssuer = false, // Установите в true и укажите ValidIssuer при необходимости
+		ValidateAudience = false, // Установите в true и укажите ValidAudience при необходимости
+		ClockSkew = TimeSpan.Zero
+	};
 });
 
 var app = builder.Build();
@@ -36,6 +62,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowOrigin");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

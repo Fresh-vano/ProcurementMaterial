@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ProcurementMaterialAPI.Controllers
 {
-	[Authorize(Roles = "manager,purchaser")]
+	[Authorize(Roles = "Manager,Purchaser")]
 	[ApiController]
 	[Route("[controller]")]
 	public class ChartController : ControllerBase

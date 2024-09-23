@@ -1,5 +1,5 @@
 // src/components/Auth/Login.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Container, Typography } from '@mui/material';
 import { useAuth } from '../../utils/auth';
@@ -8,12 +8,44 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { user, login } = useAuth();
 
-  const handleSubmit = async (event) => {
+  useEffect(() => {
+    if (user) {
+      // Пользователь аутентифицирован, перенаправляем на соответствующую страницу
+      const userRole = user.roles[0];
+      switch (userRole) {
+        case 'manager':
+          navigate('/manager');
+          break;
+        case 'purchaser':
+          navigate('/purchaser');
+          break;
+        case 'report_group':
+          navigate('/report-group');
+          break;
+        default:
+          navigate('/login');
+      }
+    }
+  }, [user, navigate]);
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    await login(username, password, () => {
-      navigate('/');
+    login(username, password, (userRole) => {
+      switch (userRole) {
+        case 'manager':
+          navigate('/manager');
+          break;
+        case 'purchaser':
+          navigate('/purchaser');
+          break;
+        case 'report_group':
+          navigate('/report-group');
+          break;
+        default:
+          navigate('/login');
+      }
     });
   };
 

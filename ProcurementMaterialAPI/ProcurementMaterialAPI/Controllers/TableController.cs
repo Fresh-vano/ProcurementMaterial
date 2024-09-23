@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProcurementMaterialAPI.Controllers
 {
-	[Authorize(Roles = "purchaser")]
+	[Authorize(Roles = "Purchaser")]
 	[ApiController]
 	[Route("[controller]")]
 	public class TableController : ControllerBase
