@@ -45,7 +45,7 @@ docker-compose up --build
 *3. После требуется выполнить миграцию базы данных следующей командой:*
 
 ```cmd
-dotnet ef database update --connection "Server=localhost,1433;Database=Materuals;User=sa;Password=Passw0rd;TrustServerCertificate=True;"
+dotnet ef database update --connection "Server=localhost,1433;Database=Materials;User=sa;Password=Passw0rd;TrustServerCertificate=True;"
 ```
 
 ### Вы можете увидеть пример работы нашей программы на видео.
