@@ -1,6 +1,7 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import AdminCreateUser from './components/Admin/AdminCreateUser';
 import Login from './components/Auth/Login';
 import ManagerDashboard from './components/Manager/Dashboard';
 import PurchaserRequestView from './components/Purchaser/RequestView';
@@ -34,6 +35,9 @@ function AppRoutes() {
           break;
         case 'report_group':
           navigate('/report-group');
+          break;
+        case 'administrator':
+          navigate('/admin/create-user');
           break;
         default:
           navigate('/login');
@@ -72,6 +76,14 @@ function AppRoutes() {
           </RequireAuth>
         }
       />
+      <Route
+            path="/admin/create-user"
+            element={
+              <RequireAuth roles={['administrator']}>
+                <AdminCreateUser />
+              </RequireAuth>
+            }
+          />
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Login />} />
       <Route path="*" element={<Navigate to="/" />} />

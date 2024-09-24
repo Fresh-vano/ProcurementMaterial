@@ -20,7 +20,7 @@ builder.Services.AddControllersWithViews().AddJsonOptions(o => o.JsonSerializerO
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MaterialDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=localhost,1433;Database=Materials;User=sa;Password=Passw0rd;TrustServerCertificate=True;"));
 
 builder.Services.AddCors(options =>
 {

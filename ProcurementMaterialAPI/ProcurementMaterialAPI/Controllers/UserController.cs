@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProcurementMaterialAPI.Controllers
 {
@@ -22,29 +23,30 @@ namespace ProcurementMaterialAPI.Controllers
 			_context = context;
 		}
 
+		[Authorize(Roles = "Administrator")]
 		[HttpPost("register")]
-		public ActionResult<string> Register(string username, string userShortName, UserRole userRole, string password)
+		public ActionResult<string> Register(UserRegisterDTO newUser)
 		{
-			var existingUser = _context.User.FirstOrDefault(x => x.UserName == username);
+			var existingUser = _context.User.FirstOrDefault(x => x.UserName == newUser.Username);
 			if (existingUser != null)
 			{
-				return BadRequest("User already exists.");
+				return Conflict();
 			}
 
-			string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+			string passwordHash = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
 
-			var newUser = new UserModel
+			var user = new UserModel
 			{
-				UserName = username,
-				UserShortName = userShortName,
-				UserRole = userRole,
+				UserName = newUser.Username,
+				UserShortName = newUser.UserShortName,
+				UserRole = newUser.UserRole,
 				PasswordHash = passwordHash
 			};
 
-			_context.User.Add(newUser);
+			_context.User.Add(user);
 			_context.SaveChanges();
 
-			return Ok("User registered successfully.");
+			return Created();
 		}
 
 		[HttpPost("auth")]

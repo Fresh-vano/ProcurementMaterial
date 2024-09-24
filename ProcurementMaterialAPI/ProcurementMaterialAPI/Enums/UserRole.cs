@@ -4,6 +4,7 @@
 	{
 		Manager = 1,
 		Purchaser,
-		Report_group
+		Report_group,
+		Administrator
 	}
 }
