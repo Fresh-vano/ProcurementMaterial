@@ -24,7 +24,7 @@ namespace ProcurementMaterialAPI.Controllers
         }
 
         // Метод для получения данных по материалам и расчета прогнозируемой средней цены
-        [HttpGet("forecast/{inn}/{material}")]
+        [HttpGet("forecast")]
         public async Task<IActionResult> GetPriceForecastByINNAndMaterial(string inn, string material)
         {
             var oneYearAgo = DateOnly.FromDateTime(DateTime.Now.AddYears(-1));
@@ -69,7 +69,8 @@ namespace ProcurementMaterialAPI.Controllers
             var result = new
             {
                 LastForecast = Math.Round(forecastForNextMonth, 2).ToString("F2"),
-            };
+                Date = materialPrices.Last().date_budat.AddMonths(1).ToString("MM-yyyy"),
+			};
 
             return Ok(result);
         }

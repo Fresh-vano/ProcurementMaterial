@@ -11,7 +11,6 @@ import LogoutButton from '../Auth/LogoutButton';
 const MAX_ITEMS = 5; // Максимальное количество элементов для отображения в MenuItem
 
 const PurchaserRequestView = () => {
-  const { logout } = useAuth();
   const navigate = useNavigate();
   const [selectedMaterial, setSelectedMaterial] = useState('');
   const [selectedInns, setSelectedInns] = useState([]);
@@ -22,6 +21,7 @@ const PurchaserRequestView = () => {
   const [materialRows, setMaterialRows] = useState([]);
   const [sfColumns, setSfColumns] = useState([]);
   const [sfRows, setSfRows] = useState([]);
+  const [forecastedPrice, setForecastedPrice] = useState(null);
 
   useEffect(() => {
     const fetchMaterials = async () => {
@@ -85,13 +85,24 @@ const PurchaserRequestView = () => {
         material: selectedMaterial,
         INNs: selectedInns
       });
-debugger
+
       setChartsData({
         bar: costComparisonResponse.data.bar,
         bar1: costOverTimeResponse.data.bar,
         bar2: quantityComparisonResponse.data.bar,
         waterfall: performanceResponse.data.chart
       });
+
+        if (selectedMaterial && selectedInns.length > 0) {
+          try {
+            const inn = selectedInns[0]; 
+            const response = await api.get(`/PriceForecast/forecast/?inn=${inn}&material=${selectedMaterial}`);
+            setForecastedPrice(response.data); 
+          } catch (error) {
+            console.error('Error fetching forecasted price:', error);
+          }
+        }
+      
     } catch (error) {
       console.error('Error fetching chart data:', error);
     }
@@ -176,6 +187,12 @@ debugger
               </Grid>
             </Box>
             <Box sx={{ mt: 3 }}>
+              {forecastedPrice && (
+                  <Paper sx={{ mt: 3, mb:3, p: 2 }}>
+                    <Typography variant="h6">Прогнозируемая цена на {forecastedPrice.date}:</Typography>
+                    <Typography variant="body1">{forecastedPrice.lastForecast}</Typography>
+                  </Paper>
+                )}
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
                   <Paper sx={{ p: 2 }}>
