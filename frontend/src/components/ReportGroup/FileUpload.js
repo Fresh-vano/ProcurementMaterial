@@ -33,7 +33,6 @@ const FileUpload = () => {
 
     const formData = new FormData();
     formData.append('files', file);
-debugger
     if (isInventoryFile) {
       formData.append('dateString', date);
     }
@@ -51,10 +50,10 @@ debugger
 
       if (response.status === 200) {
         setSuccess('File uploaded successfully!');
-        setError(null);
+        setOpenSuccess(true);
       } else {
         setError('Error uploading file');
-        setSuccess(null);
+        setOpenError(true);
       }
     } catch (error) {
       setError('Error uploading file');
