@@ -36,7 +36,7 @@ namespace ProcurementMaterialAPI.Controllers
                 .Select(g => new
                 {
                     date_budat = g.Key,
-                    cost = g.Average(m => m.cost) // Берем среднюю цену за день
+                    cost = g.Average(m => m.cost / m.quan) // Берем среднюю цену за день
                 })
                 .OrderBy(m => m.date_budat)
                 .ToListAsync();
