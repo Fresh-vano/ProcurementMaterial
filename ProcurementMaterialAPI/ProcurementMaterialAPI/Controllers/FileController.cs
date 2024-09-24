@@ -21,7 +21,7 @@ namespace ProcurementMaterialAPI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> UploadFile([FromForm] ICollection<IFormFile> files, string dateString)
+		public async Task<ActionResult> UploadFile([FromForm] ICollection<IFormFile> files, [FromForm] string dateString)
 		{
 			try
 			{

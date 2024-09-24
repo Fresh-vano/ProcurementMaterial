@@ -4,9 +4,10 @@ import { Button, Snackbar, Alert, Checkbox, FormControlLabel, TextField, Box, Ci
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
   const [isInventoryFile, setIsInventoryFile] = useState(false);
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState('');
@@ -26,28 +27,38 @@ const FileUpload = () => {
   const handleUpload = async () => {
     if (!file) {
       setError('No file selected');
-      setOpen(true);
+      setOpenError(true);
       return;
     }
 
     const formData = new FormData();
     formData.append('files', file);
-
-    const url = isInventoryFile ? 'http://localhost:8080/File' : 'http://localhost:8080/File/sf';
+debugger
+    if (isInventoryFile) {
+      formData.append('dateString', date);
+    }
+    
+    // Определение URL эндпоинта
+    const url = isInventoryFile ? '/File' : '/File/sf'; // Используйте относительные пути    
 
     setLoading(true);
     try {
-      await api.post(url, formData, {
+      const response = await api.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          ...(isInventoryFile && { 'dateString': date }), 
         },
       });
-      setSuccess('File uploaded successfully!');
-      setOpen(true);
+
+      if (response.status === 200) {
+        setSuccess('File uploaded successfully!');
+        setError(null);
+      } else {
+        setError('Error uploading file');
+        setSuccess(null);
+      }
     } catch (error) {
       setError('Error uploading file');
-      setOpen(true);
+      setOpenError(true);
     } finally {
       setLoading(false);
     }
@@ -56,7 +67,8 @@ const FileUpload = () => {
   const handleClose = () => {
     setError(null);
     setSuccess(null);
-    setOpen(false);
+    setOpenSuccess(false);
+    setOpenError(false);
   };
 
   return (
@@ -88,17 +100,15 @@ const FileUpload = () => {
           {loading ? <CircularProgress size={24} /> : 'Загрузить'}
         </Button>
       </Box>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        {error ? (
-          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-            {error}
-          </Alert>
-        ) : null}
-        {success ? (
+      <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
             {success}
           </Alert>
-        ) : null}
+      </Snackbar>
+      <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            {error}
+          </Alert>
       </Snackbar>
     </Box>
   );
