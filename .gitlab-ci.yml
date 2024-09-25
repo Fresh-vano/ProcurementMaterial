@@ -1,0 +1,48 @@
+stages:
+  - build
+  - deploy_dev
+  - deploy_prod
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+default:
+  image: docker:latest
+  services:
+    - docker:19-dind
+  before_script:
+    - docker info
+    - cd ProcurementMaterialAPI
+
+build_job:
+  stage: build
+  tags:
+    - shared
+  script:
+    - echo "Compiling the image..."
+    - docker compose build
+    - echo "Compile complete."
+
+deploy_dev_job:
+  stage: deploy_dev
+  only:
+    - dev
+  tags:
+    - shared
+  script:
+    - echo "Deploying to development environment..."
+    - docker compose up -d
+    - echo "Deployment to development environment complete."
+
+deploy_prod_job:
+  stage: deploy_prod
+  only:
+    - master
+  tags:
+    - shared
+  script:
+    - echo "Deploying to production environment..."
+    - docker compose up -d
+    - echo "Deployment to production environment complete."
